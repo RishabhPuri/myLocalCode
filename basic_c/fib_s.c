@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include <stdbool.h>
 
 int bin_seq (int *fib, int size, int key)
 {
