@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+__foo	test3.c	/^}__foo;$/;"	v	typeref:struct:__anon1
+__foo1	test3.c	/^}__foo1;$/;"	v	typeref:struct:__anon2
+a	ds/sort_array.c	/^	int a[6] = {0};$/;"	v
+a	test3.c	/^int a;$/;"	m	struct:__anon1	file:
+a	test3.c	/^int a;$/;"	m	struct:__anon2	file:
+b	test3.c	/^int b;$/;"	m	struct:__anon1	file:
+b	test3.c	/^int b;$/;"	m	struct:__anon2	file:
+c	test3.c	/^char c;$/;"	m	struct:__anon1	file:
+c	test3.c	/^char c;$/;"	m	struct:__anon2	file:
+debug	test4.c	3;"	d	file:
+i	ds/sort_array.c	/^	int i,len = 0;$/;"	v
+len	ds/sort_array.c	/^	int i,len = 0;$/;"	v
+main	bit_progs/test1.c	/^void main(){int a[10] = {0};$/;"	f
+main	ds/sort_array.c	/^void main ()$/;"	f
+main	test1.c	/^void main ()$/;"	f
+main	test2.c	/^void main ()$/;"	f
+main	test3.c	/^void main ()$/;"	f
+main	test4.c	/^void main()$/;"	f
+print_array	ds/sort_array.c	/^int print_array(int *a)$/;"	f
+setbits	bit_progs/bit1.c	/^void setbits(unsigned int x, int p, int n, unsigned int y){$/;"	f
+user_input	ds/sort_array.c	/^int user_input (int *a)$/;"	f
