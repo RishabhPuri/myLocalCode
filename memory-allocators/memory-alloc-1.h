@@ -27,14 +27,17 @@
  *  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdbool.h>
 
 
 typedef struct __MEMPOOL_NODE {
   unsigned int size;   // not needed if fixed ?
-  void *data;
   bool bUsed;
+  void *data;
+  struct __MEMPOOL_NODE *next;
  } MEMPOOL_NODE;
 
 typedef struct __MEMPOOL_T { 
@@ -45,12 +48,13 @@ typedef struct __MEMPOOL_T {
 
 #define MP_ALIGN_OF(x,a)  (((x)+(a))-1UL)&(~((a)-1UL))
 
-MEMPOOL_T *mem_pool_init (size_t size);
-MEMPOOL_NODE *alloc_mem (size_t size );
-void free_mem (MEMPOOL_NODE *ptr);
+MEMPOOL_T *mem_pool_init (size_t , unsigned int );
+MEMPOOL_NODE *alloc_mem (MEMPOOL_T *) __attribute__((nonnull));
+void free_mem (MEMPOOL_T *, MEMPOOL_NODE *ptr)__attribute__((nonnull));
 
 
 
+void inline addToFreePool (MEMPOOL_T *, MEMPOOL_NODE *) __attribute__((nonnull, always_inline));
 
 
 
