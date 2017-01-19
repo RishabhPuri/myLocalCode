@@ -31,9 +31,10 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
                        (numOfElem * sizeof (MEMPOOL_NODE)) + 
                        sizeof (MEMPOOL_T);
 
-  printf ("Required mem %u kb \n", count/1000);
+  printf ("Required mem %u bytes \n", count);
 
   char *pChunk = sbrk (count);
+  char *pChunkCursor = pChunk;
 
   if (!pChunk)
   {
@@ -53,11 +54,14 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
   ep->head = ep->tail = 0x0;
 
   /** Init tail / head */ 
-  ep->tail = ep->head = (MEMPOOL_NODE *)(pChunk + sizeof(MEMPOOL_T));
+  pChunkCursor = pChunk + sizeof(MEMPOOL_T); 
+  ep->tail = ep->head = (MEMPOOL_NODE *)(pChunkCursor);
 
   for (count = 0, np = ep->head; count < size; count++)
   {
-    np->next =  np + sizeof(MEMPOOL_NODE);
+    pChunkCursor += sizeof(MEMPOOL_NODE);
+    np = np->next;
+    np = (MEMPOOL_NODE *)pChunkCursor;
     addToFreePool (ep, np);
   }
 
@@ -78,11 +82,13 @@ MEMPOOL_NODE *allocNode (MEMPOOL_T *pPool)
    ep->next = pPool->tail;
    pPool->tail = ep;
    pPool->numUsed++;
+   ep->bUsed = True; 
    return ep;
 }
 
 void free_mem (MEMPOOL_T *pPool, MEMPOOL_NODE *pNode)
 {
+  pNode->bUsed = False;
   pPool->tail = pNode->next;
   pNode->next = pPool->head;
   pPool->head = pNode;
@@ -91,5 +97,26 @@ void free_mem (MEMPOOL_T *pPool, MEMPOOL_NODE *pNode)
 
 int main ()
 {
+  char *cData[] = {"HELLO", "2HELLO", "3HELLO","4HELLO","5HELLO","6HELLO","7HELLO","8HELLO","9HELLO","10HELLO"};
+
+  unsigned int i;
+  MEMPOOL_T *pPool = mem_pool_init (20, 10);
+  MEMPOOL_NODE *ep;
+  for (i=0;i<10;i++)
+  {
+    ep = allocNode (pPool);
+    strcpy (ep->data, cData[i]);
+  }
+
+  ep = pPool->head;
+  for (i=0;i<10;i++)
+  {
+   
+    printf ("%d: %s\n",i, (char*)ep->data);
+    free_mem (pPool, ep);
+  }
+
+  printf ("no of used entries in pool :%d", pPool->numUsed); 
+  free (pPool);
   return 0;
 }

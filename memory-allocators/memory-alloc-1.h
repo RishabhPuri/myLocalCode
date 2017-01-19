@@ -31,6 +31,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <string.h>
+
+#define True  1
+#define False 0
 
 
 typedef struct __MEMPOOL_NODE {
@@ -38,7 +42,7 @@ typedef struct __MEMPOOL_NODE {
   bool bUsed;
   void *data;
   struct __MEMPOOL_NODE *next;
- } MEMPOOL_NODE;
+} MEMPOOL_NODE;
 
 typedef struct __MEMPOOL_T { 
   unsigned int numUsed;
