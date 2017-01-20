@@ -33,7 +33,8 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
 
   printf ("Required mem %u bytes \n", count);
 
-  char *pChunk = sbrk (count);
+  //char *pChunk = sbrk (count);
+  char *pChunk = calloc (count, 1);
   char *pChunkCursor = pChunk;
 
   if (!pChunk)
@@ -56,13 +57,15 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
   /** Init tail / head */ 
   pChunkCursor = pChunk + sizeof(MEMPOOL_T); 
   ep->tail = ep->head = (MEMPOOL_NODE *)(pChunkCursor);
+  ep->tail->data = ep->head->data = (char *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
 
-  for (count = 0, np = ep->head; count < size; count++)
+  for (count = 0, np = ep->head; count < numOfElem; count++)
   {
     pChunkCursor += sizeof(MEMPOOL_NODE);
     np = np->next;
     np = (MEMPOOL_NODE *)pChunkCursor;
     addToFreePool (ep, np);
+    np->data = (char *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
   }
 
   return ep; 
@@ -95,17 +98,17 @@ void free_mem (MEMPOOL_T *pPool, MEMPOOL_NODE *pNode)
   pPool->numUsed--;
 }
 
-int main ()
+int main (void)
 {
   char *cData[] = {"HELLO", "2HELLO", "3HELLO","4HELLO","5HELLO","6HELLO","7HELLO","8HELLO","9HELLO","10HELLO"};
 
   unsigned int i;
-  MEMPOOL_T *pPool = mem_pool_init (20, 10);
+  MEMPOOL_T *pPool = mem_pool_init (40, 10);
   MEMPOOL_NODE *ep;
   for (i=0;i<10;i++)
   {
     ep = allocNode (pPool);
-    strcpy (ep->data, cData[i]);
+    strcpy ((char*)(ep->data), cData[i]);
   }
 
   ep = pPool->head;

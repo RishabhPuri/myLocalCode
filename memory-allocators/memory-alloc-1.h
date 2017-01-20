@@ -32,6 +32,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stddef.h>
 
 #define True  1
 #define False 0
@@ -40,8 +41,8 @@
 typedef struct __MEMPOOL_NODE {
   unsigned int size;   // not needed if fixed ?
   bool bUsed;
-  void *data;
   struct __MEMPOOL_NODE *next;
+  void *data;  // dont add anything below this 
 } MEMPOOL_NODE;
 
 typedef struct __MEMPOOL_T { 
