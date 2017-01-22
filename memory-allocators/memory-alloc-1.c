@@ -34,7 +34,7 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
   printf ("Required mem %u bytes \n", count);
 
   //char *pChunk = sbrk (count);
-  char *pChunk = calloc (count, 1);
+  char *pChunk = calloc (count, sizeof(char));
   char *pChunkCursor = pChunk;
 
   if (!pChunk)
