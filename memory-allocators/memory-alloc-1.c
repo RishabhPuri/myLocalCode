@@ -35,7 +35,7 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
 
   //char *pChunk = sbrk (count);
   char *pChunk = calloc (count, sizeof(char));
-  char *pChunkCursor = pChunk;
+  char *pChunkCursor = 0x0;
 
   if (!pChunk)
   {
@@ -56,16 +56,31 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
 
   /** Init tail / head */ 
   pChunkCursor = pChunk + sizeof(MEMPOOL_T); 
-  ep->tail = ep->head = (MEMPOOL_NODE *)(pChunkCursor);
-  ep->tail->data = ep->head->data = (char *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
+
+  np = (MEMPOOL_NODE *)pChunkCursor;
+  np->size = 0;
+  np->bUsed = False;
+  np->next = 0x0;
+  *(np->data) = (void *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
+  
+  ep->tail = ep->head = np;
+
+#if 0
+  ep->tail = (MEMPOOL_NODE *)(pChunkCursor);
+  ep->head = (MEMPOOL_NODE *)(pChunkCursor);
+  //pChunkCursor = pChunkCursor + offsetof (MEMPOOL_NODE, data);
+  pChunkCursor = pChunkCursor + 16;
+  ep->tail->data = pChunkCursor;
+  ep->head->data = pChunkCursor;
+#endif
 
   for (count = 0, np = ep->head; count < numOfElem; count++)
   {
-    pChunkCursor += sizeof(MEMPOOL_NODE);
+    pChunkCursor += (sizeof(MEMPOOL_NODE) + 10);
     np = np->next;
     np = (MEMPOOL_NODE *)pChunkCursor;
     addToFreePool (ep, np);
-    np->data = (char *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
+    *(np->data) = (char *)(pChunkCursor + offsetof (MEMPOOL_NODE, data));
   }
 
   return ep; 
