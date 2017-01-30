@@ -42,7 +42,7 @@ typedef struct __MEMPOOL_NODE {
   unsigned int size;   // not needed if fixed ?
   bool bUsed;
   struct __MEMPOOL_NODE *next;
-  void **data;  // dont add anything below this 
+  void *data;  // dont add anything below this 
 } MEMPOOL_NODE;
 
 typedef struct __MEMPOOL_T { 
