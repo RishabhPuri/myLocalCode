@@ -33,8 +33,8 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
 
   printf ("Required mem %u bytes \n", count);
 
-  //char *pChunk = sbrk (count);
-  char *pChunk = calloc (count, sizeof(char));
+  char *pChunk = sbrk (count);
+  //char *pChunk = calloc (count, sizeof(char));
   char *pChunkCursor = 0x0;
 
   if (!pChunk)
@@ -46,8 +46,6 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
   MEMPOOL_T *ep = 0x0;
   MEMPOOL_NODE *np = 0x0;
 
-    
-  
   /** we have the chunk , lets initialize the control block and then list */ 
   ep = (MEMPOOL_T *)pChunk;
   ep->numUsed  = 0;
@@ -65,7 +63,7 @@ MEMPOOL_T *mem_pool_init (size_t size, unsigned int numOfElem)
   
   ep->tail = ep->head = np;
 
-  for (count = 0, np = ep->head; count < numOfElem; count++)
+  for (count = 0, np = ep->head; count < numOfElem+1; count++)
   {
     pChunkCursor += (sizeof(MEMPOOL_NODE) + 10);
     np = np->next;
