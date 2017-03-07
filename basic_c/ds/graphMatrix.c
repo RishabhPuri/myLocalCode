@@ -15,31 +15,34 @@ unsigned int G2[VERTEX_MAX][VERTEX_MAX] = {0};
 
 int min (int s, unsigned int nV, unsigned int *visit, unsigned int *dist)
 {
-    unsigned int i, minDist = 0;
-    for (i=0;i<=nV;i++)
+    unsigned int i, minDist = 0xffff;
+    for (i=1;i<=nV;i++)
     {
-        if ((visit[i] == 1) && (dist[i] <= minDist ))
+        if ((visit[i] == 0) && (dist[i] <= minDist ))
+        {
             minDist = dist[i];
+            s = i; 
+        }
     }
-    return i;
+    return s;
 }
 
 void printSol (unsigned int *dist, unsigned int nV)
 {
     unsigned int i;
-    printf ("Vertex/tDistance\n");
-    for (i=0;i<=nV;i++)
-        printf ("%u/t%u\n",nV, dist[i]);
+    printf ("Vertex\tDistance\n");
+    for (i=1;i<=nV;i++)
+        printf ("%u\t%u\n",i, dist[i]);
 }
 
 void dijkstra (unsigned int nV, int s)
 {
-    unsigned int i , j ;
+    unsigned int i , j, u, v;
     unsigned int *visited = calloc (1, sizeof (int));
     unsigned int *dist = calloc (nV, sizeof (int));
 
     /** set distances as max and visited as zero */
-    for (i=0;i<=nV;i++)
+    for (i=1;i<=nV;i++)
     {
         visited[i] = 0;
         dist[i] = DIST_MIN;
@@ -50,19 +53,21 @@ void dijkstra (unsigned int nV, int s)
 
     /** Run 1st loop to calculate shortest path for all vertices using source as source 
       * Run 2nd loop for neighbors for the vertex selected above */
-    for (i=0; i<=nV;i++)
+    for (i=1; i<=nV;i++)
     {
         /** Select the  vertex with min distance */
-        unsigned int tSource = min(s, nV, visited, dist);
-        visited[tSource] =  1;
+        u = min(s, nV, visited, dist);
+        visited[u] = 1;
+        //printf ("min is %u\n",u);
 
         /** traverse the graph for that particular vertex neighbors */
-        for (j=0;j<=nV;j++)
+        for (v=1;v<=nV;v++)
         {
-            if ((visited[j]!=0) && (G1[tSource][j] != 0) 
-                        && (dist[tSource] != DIST_MIN) 
-                        && (dist[tSource] + G1[tSource][j] < DIST_MIN))
-                dist[j] = dist[tSource] + G1[tSource][j];
+            if ((visited[v]==0) && (G1[u][v] != 0) 
+                        && (dist[u] != DIST_MIN) 
+                        && (dist[u] + G1[u][v] < dist[v]))
+                dist[v] = dist[u] + G1[u][v];
+                //printf ("vertex %u, dist %u\n",v, dist[v]);
         }
 
     }
