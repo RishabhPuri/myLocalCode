@@ -63,11 +63,14 @@ void dijkstra (unsigned int nV, int s)
         /** traverse the graph for that particular vertex neighbors */
         for (v=1;v<=nV;v++)
         {
-            if ((visited[v]==0) && (G1[u][v] != 0) 
+            if ((visited[v]==0)         
+                        && (G1[u][v] != 0) 
                         && (dist[u] != DIST_MIN) 
                         && (dist[u] + G1[u][v] < dist[v]))
+            {
                 dist[v] = dist[u] + G1[u][v];
                 //printf ("vertex %u, dist %u\n",v, dist[v]);
+            }
         }
 
     }
