@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef  enum{true, false}bool;
-
-// q - front rear ptr
-//
-typedef struct _QNode {
-  unsigned int data;
-  struct _QNode *next;
-}qNode;
-
-typedef struct _Q {
-  qNode *front, *rear;
-  unsigned int maxCap;
-  unsigned int currCount;
-} Q;
-
+#include "Qlist.h"
 qNode *newNode (unsigned int key)
 {
   qNode *temp = calloc (1, sizeof (qNode));
@@ -55,7 +38,7 @@ void enQ (Q *q, unsigned int data)
 unsigned int deQ (Q *q)
 {
   if (q->front == 0x0)
-    return;  // underflow
+    return 0xffffffff;  // underflow
   
   unsigned int key  = q->front->data;
   qNode *tNode = q->front; 
@@ -78,7 +61,7 @@ void delQ (Q *q)
     free (q);
 }
 
-
+#if 0
 void main ()
 {
      Q *q = initQ(10);
@@ -91,6 +74,7 @@ void main ()
     enQ(q, 50);
     printf("Dequeued item is %d", deQ(q));
     delQ(q);
-    return 0;
+    return ;
 
 }
+#endif
