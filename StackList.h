@@ -10,6 +10,8 @@ typedef struct _stack {
   sNode *top;  
 }stack;
 
+stack *initStack ();
 void push (stack *s, int data);
 int pop (stack *s);
+int isStackEmpty(stack *);
 

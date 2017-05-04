@@ -8,7 +8,7 @@ stack *initStack ()
   return temp;
 }
 
-sNode *newNode (int data)
+sNode *newStNode (int data)
 {
   sNode *temp = calloc (1, sizeof(sNode));
   temp->data = data;
@@ -18,7 +18,7 @@ sNode *newNode (int data)
 
 void push (stack *s, int data)
 {
-  sNode *temp =  newNode (data);
+  sNode *temp =  newStNode (data);
   sNode *pTop = s->top;
   temp->next = pTop;
   s->top = temp;
@@ -36,3 +36,7 @@ int pop (stack *s)
   return key;
 }
 
+int isStackEmpty (stack *s)
+{
+  return (s->top == 0x0) ? 1:0;
+} 
